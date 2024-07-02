@@ -1,3 +1,6 @@
+<h1 class="code-line" data-line-start=0 data-line-end=1 ><a id="BLE_Device_Scanner_0"></a>BLE Device Scanner</h1>
+<h2 class="code-line" data-line-start=1 data-line-end=2 ><a id="This_React_Native_app_built_with_Expo_scans_for_nearby_BLE_devices_and_displays_their_names_and_RSSI_values_1"></a>This React Native app, built with Expo, scans for nearby BLE devices and displays their names and RSSI values.</h2>
+<h2 class="code-line" data-line-start=3 data-line-end=4 ><a id="Prerequisites_3"></a>Prerequisites</h2>
 <ul>
 <li class="has-line-data" data-line-start="4" data-line-end="5">Node.js (v14 or later)</li>
 <li class="has-line-data" data-line-start="5" data-line-end="6">Expo CLI (<code>npm install -g expo-cli</code>)</li>
