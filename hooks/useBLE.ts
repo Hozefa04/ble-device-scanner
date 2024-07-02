@@ -2,13 +2,10 @@
 import { useMemo, useState } from "react";
 import { PermissionsAndroid, Platform } from "react-native";
 import {
-  BleError,
   BleManager,
-  Characteristic,
   Device,
 } from "react-native-ble-plx";
 import * as ExpoDevice from "expo-device";
-import base64 from "react-native-base64";
 
 interface BluetoothLowEnergyApi {
   requestPermissions(): Promise<boolean>;
