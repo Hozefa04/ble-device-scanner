@@ -13,17 +13,20 @@ import {
 import { Device } from "react-native-ble-plx";
 
 export default function App() {
-  const [scanning, setScanning] = useState<boolean>(false);
+  // State to manage scanning status
+  const [scanning, setScanning] = useState(false);
+
+  // Destructure functions and state from custom hook
   const { requestPermissions, scanForPeripherals, allDevices } = useBLE();
 
-  // Set scanning to false once a few devices are found
+  // Effect to stop scanning once devices are found
   useEffect(() => {
     if (allDevices.length > 0) {
       setScanning(false);
     }
   }, [allDevices]);
 
-  // Scan for devices every 5 seconds
+  // Effect to scan for devices every 5 seconds
   useEffect(() => {
     const intervalId = setInterval(() => {
       scanForDevices();
@@ -34,15 +37,18 @@ export default function App() {
       }, 4000);
     }, 5000);
 
+    // Cleanup interval on unmount
     return () => clearInterval(intervalId);
   }, []);
 
+  // Function to handle scanning for devices
   const scanForDevices = async () => {
     const isPermissionsEnabled = await requestPermissions();
     if (isPermissionsEnabled) {
-      setScanning(true);
-      scanForPeripherals();
+      setScanning(true); // Set scanning state to true
+      scanForPeripherals(); // Start scanning for peripherals
     } else {
+      // Show alert if permissions are not granted
       Alert.alert(
         "Permission Error",
         "BLE permission is required to scan for devices."
@@ -50,6 +56,7 @@ export default function App() {
     }
   };
 
+  // Function to render each device item in the list
   const renderItem: ListRenderItem<Device> = ({ item }) => (
     <View style={styles.deviceItem}>
       <Text style={styles.deviceName}>{item.name || "Unknown Device"}</Text>

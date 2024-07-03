@@ -14,10 +14,13 @@ interface BluetoothLowEnergyApi {
 }
 
 function useBLE(): BluetoothLowEnergyApi {
+  // Initialize the BLE manager using useMemo to ensure it's only created once
   const bleManager = useMemo(() => new BleManager(), []);
-  const [allDevices, setAllDevices] = useState<Device[]>([]);
+  
+  // State to store all discovered devices
+  const [allDevices, setAllDevices] = useState<Device[]>([]); 
 
-  // This is required to get permission for Android API level 31 and above
+  // Function to request permissions required for Android API level 31 and above
   const requestAndroid31Permissions = async () => {
     const bluetoothScanPermission = await PermissionsAndroid.request(
       PermissionsAndroid.PERMISSIONS.BLUETOOTH_SCAN,
@@ -44,6 +47,7 @@ function useBLE(): BluetoothLowEnergyApi {
       }
     );
 
+    // Check if all required permissions are granted
     return (
       bluetoothScanPermission === "granted" &&
       bluetoothConnectPermission === "granted" &&
@@ -51,10 +55,10 @@ function useBLE(): BluetoothLowEnergyApi {
     );
   };
 
-  // Regular permission checks
+  // Function to request necessary permissions based on the Android API level
   const requestPermissions = async () => {
     if (Platform.OS === "android") {
-      // For below Android API Level 31
+      // For Android API levels below 31
       if ((ExpoDevice.platformApiLevel ?? -1) < 31) {
         const granted = await PermissionsAndroid.request(
           PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
@@ -66,26 +70,30 @@ function useBLE(): BluetoothLowEnergyApi {
         );
         return granted === PermissionsAndroid.RESULTS.GRANTED;
       } else {
-        const isAndroid31PermissionsGranted =
-          await requestAndroid31Permissions();
-
+        // For Android API level 31 and above
+        const isAndroid31PermissionsGranted = await requestAndroid31Permissions();
         return isAndroid31PermissionsGranted;
       }
     } else {
-      return true;
+      // iOS permissions are handled differently and are assumed to be granted
+      return true; 
     }
   };
 
+  // Helper function to check if a device is already in the list of discovered devices
   const isDuplicteDevice = (devices: Device[], nextDevice: Device) =>
     devices.findIndex((device) => nextDevice.id === device.id) > -1;
 
+  // Function to start scanning for BLE peripherals
   const scanForPeripherals = () =>
     bleManager.startDeviceScan(null, null, (error, device) => {
       if (error) {
         console.log(error);
+        return;
       }
       if (device) {
         setAllDevices((prevState: Device[]) => {
+           // Add the device to the state if it's not a duplicate
           if (!isDuplicteDevice(prevState, device)) {
             return [...prevState, device];
           }
