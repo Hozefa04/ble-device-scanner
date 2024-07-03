@@ -24,7 +24,7 @@ function useBLE(): BluetoothLowEnergyApi {
   const requestPermissions = async () => {
     if (Platform.OS === "android") {
       const apiLevel = ExpoDevice.platformApiLevel ?? 0;
-      
+  
       if (apiLevel < 31) {
         const granted = await PermissionsAndroid.request(
           PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
@@ -35,7 +35,7 @@ function useBLE(): BluetoothLowEnergyApi {
           }
         );
         return granted === PermissionsAndroid.RESULTS.GRANTED;
-      } else {
+      } else if (apiLevel >= 31) {
         const result = await PermissionsAndroid.requestMultiple([
           PermissionsAndroid.PERMISSIONS.BLUETOOTH_SCAN,
           PermissionsAndroid.PERMISSIONS.BLUETOOTH_CONNECT,
@@ -46,11 +46,23 @@ function useBLE(): BluetoothLowEnergyApi {
           result['android.permission.BLUETOOTH_CONNECT'] === PermissionsAndroid.RESULTS.GRANTED &&
           result['android.permission.ACCESS_FINE_LOCATION'] === PermissionsAndroid.RESULTS.GRANTED
         );
+      } else {
+        // Handle unexpected API levels gracefully by defaulting to the standard permission request
+        const granted = await PermissionsAndroid.request(
+          PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+          {
+            title: "Location Permission",
+            message: "Bluetooth Low Energy requires Location",
+            buttonPositive: "OK",
+          }
+        );
+        return granted === PermissionsAndroid.RESULTS.GRANTED;
       }
     } else {
+      // on iOS we assume that the permission is granted
       return true;
     }
-  };
+  };  
 
   // Helper function to check if a device is already in the list of discovered devices
   const isDuplicteDevice = (devices: Device[], nextDevice: Device) =>

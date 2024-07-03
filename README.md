@@ -56,57 +56,58 @@ Instructions on how to use them in your own application are linked below.</p>
 <h2 class="code-line" data-line-start=43 data-line-end=44 ><a id="Running_the_tests_43"></a>Running the tests</h2>
 <p class="has-line-data" data-line-start="45" data-line-end="46">To run the tests, simply run the command <code>npm test</code> OR <code>yarn test</code></p>
 <blockquote>
-<p class="has-line-data" data-line-start="47" data-line-end="58">PASS  <code>app/hooks/__tests__/useBLE.test.ts</code><br>
+<p class="has-line-data" data-line-start="47" data-line-end="59">PASS  <code>app/hooks/__tests__/useBLE.test.ts</code><br>
 useBLE hook<br>
 ✓ should request permissions and return true when granted on Android API &lt; 31 (7 ms)<br>
 ✓ should request permissions and return true when granted on Android API &gt;= 31 (3 ms)<br>
 ✓ should return true for permissions on iOS (1 ms)<br>
 ✓ should return false for denied permissions on Android API &lt; 31 (1 ms)<br>
 ✓ should return false for denied permissions on Android API &gt;= 31 (2 ms)<br>
+✓ should handle a specific edge case for API level<br>
 ✓ should scan for peripherals and add devices to state (52 ms)<br>
 ✓ should not add duplicate devices to state (52 ms)<br>
 ✓ should scan for peripherals and add multiple devices to state (54 ms)<br>
 ✓ should handle scan errors (3 ms)</p>
 </blockquote>
 <blockquote>
-<p class="has-line-data" data-line-start="59" data-line-end="63">Test Suites: 1 passed, 1 total<br>
-Tests:       9 passed, 9 total<br>
+<p class="has-line-data" data-line-start="60" data-line-end="64">Test Suites: 1 passed, 1 total<br>
+Tests:       10 passed, 10 total<br>
 Snapshots:   0 total<br>
-Time:        0.87 s, estimated 2 s</p>
+Time:        1.126 s, estimated 2 s</p>
 </blockquote>
-<h2 class="code-line" data-line-start=64 data-line-end=65 ><a id="Building_Standalone_Apps_64"></a>Building Standalone Apps</h2>
-<h3 class="code-line" data-line-start=66 data-line-end=67 ><a id="iOS_IPA_66"></a>iOS (IPA)</h3>
+<h2 class="code-line" data-line-start=65 data-line-end=66 ><a id="Building_Standalone_Apps_65"></a>Building Standalone Apps</h2>
+<h3 class="code-line" data-line-start=67 data-line-end=68 ><a id="iOS_IPA_67"></a>iOS (IPA)</h3>
 <ol>
-<li class="has-line-data" data-line-start="68" data-line-end="69">Run <code>expo build:ios</code></li>
-<li class="has-line-data" data-line-start="69" data-line-end="71">Follow the prompts to generate an IPA file.</li>
+<li class="has-line-data" data-line-start="69" data-line-end="70">Run <code>expo build:ios</code></li>
+<li class="has-line-data" data-line-start="70" data-line-end="72">Follow the prompts to generate an IPA file.</li>
 </ol>
-<h3 class="code-line" data-line-start=71 data-line-end=72 ><a id="Android_APK_71"></a>Android (APK)</h3>
+<h3 class="code-line" data-line-start=72 data-line-end=73 ><a id="Android_APK_72"></a>Android (APK)</h3>
 <ol>
-<li class="has-line-data" data-line-start="73" data-line-end="74">Run <code>expo build:android -t apk</code></li>
-<li class="has-line-data" data-line-start="74" data-line-end="76">Follow the prompts to generate an APK file.</li>
+<li class="has-line-data" data-line-start="74" data-line-end="75">Run <code>expo build:android -t apk</code></li>
+<li class="has-line-data" data-line-start="75" data-line-end="77">Follow the prompts to generate an APK file.</li>
 </ol>
-<h2 class="code-line" data-line-start=76 data-line-end=77 ><a id="Notes_and_Caveats_76"></a>Notes and Caveats</h2>
+<h2 class="code-line" data-line-start=77 data-line-end=78 ><a id="Notes_and_Caveats_77"></a>Notes and Caveats</h2>
 <ul>
-<li class="has-line-data" data-line-start="77" data-line-end="78">Bluetooth permissions must be granted on the device for the app to function properly.</li>
-<li class="has-line-data" data-line-start="78" data-line-end="79">On Android 12+, location permissions may also be required for BLE scanning.</li>
-<li class="has-line-data" data-line-start="79" data-line-end="81">The app scans for devices every 5 seconds to update the list.</li>
+<li class="has-line-data" data-line-start="78" data-line-end="79">Bluetooth permissions must be granted on the device for the app to function properly.</li>
+<li class="has-line-data" data-line-start="79" data-line-end="80">On Android 12+, location permissions may also be required for BLE scanning.</li>
+<li class="has-line-data" data-line-start="80" data-line-end="82">The app scans for devices every 5 seconds to update the list.</li>
 </ul>
-<h2 class="code-line" data-line-start=81 data-line-end=82 ><a id="Potential_Additional_Features_81"></a>Potential Additional Features</h2>
+<h2 class="code-line" data-line-start=82 data-line-end=83 ><a id="Potential_Additional_Features_82"></a>Potential Additional Features</h2>
 <ul>
-<li class="has-line-data" data-line-start="83" data-line-end="84">Implement a connection feature to interact with specific BLE devices.</li>
-<li class="has-line-data" data-line-start="84" data-line-end="85">Add a filter to show only devices with a certain signal strength or name pattern.</li>
-<li class="has-line-data" data-line-start="85" data-line-end="87">Implement background scanning and notifications for discovered devices.</li>
+<li class="has-line-data" data-line-start="84" data-line-end="85">Implement a connection feature to interact with specific BLE devices.</li>
+<li class="has-line-data" data-line-start="85" data-line-end="86">Add a filter to show only devices with a certain signal strength or name pattern.</li>
+<li class="has-line-data" data-line-start="86" data-line-end="88">Implement background scanning and notifications for discovered devices.</li>
 </ul>
-<h2 class="code-line" data-line-start=87 data-line-end=88 ><a id="Native_Bridge_Code_Considerations_87"></a>Native Bridge Code Considerations</h2>
-<p class="has-line-data" data-line-start="89" data-line-end="90">For more complex BLE interactions or device-specific features, native modules might be necessary:</p>
+<h2 class="code-line" data-line-start=88 data-line-end=89 ><a id="Native_Bridge_Code_Considerations_88"></a>Native Bridge Code Considerations</h2>
+<p class="has-line-data" data-line-start="90" data-line-end="91">For more complex BLE interactions or device-specific features, native modules might be necessary:</p>
 <ul>
-<li class="has-line-data" data-line-start="91" data-line-end="94">
-<p class="has-line-data" data-line-start="91" data-line-end="93">For iOS (Swift):<br>
+<li class="has-line-data" data-line-start="92" data-line-end="95">
+<p class="has-line-data" data-line-start="92" data-line-end="94">For iOS (Swift):<br>
 Create a native module that bridges React Native with CoreBluetooth framework.</p>
 </li>
-<li class="has-line-data" data-line-start="94" data-line-end="97">
-<p class="has-line-data" data-line-start="94" data-line-end="96">For Android (Kotlin):<br>
+<li class="has-line-data" data-line-start="95" data-line-end="98">
+<p class="has-line-data" data-line-start="95" data-line-end="97">For Android (Kotlin):<br>
 Develop a native module using the Android Bluetooth LE API.</p>
 </li>
 </ul>
-<p class="has-line-data" data-line-start="97" data-line-end="98">These native modules can be integrated into the React Native project using the react-native-ble-plx library’s native code as a reference.</p>
+<p class="has-line-data" data-line-start="98" data-line-end="99">These native modules can be integrated into the React Native project using the react-native-ble-plx library’s native code as a reference.</p>

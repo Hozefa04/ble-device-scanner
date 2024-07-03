@@ -189,6 +189,19 @@ describe('useBLE hook', () => {
     ]);
   });
 
+  it('should handle a specific edge case for API level', async () => {
+    Platform.OS = 'android';
+    setApiLevel(30);
+    (PermissionsAndroid.request as jest.Mock).mockResolvedValue(PermissionsAndroid.RESULTS.DENIED);
+  
+    const { result } = renderHook(() => useBLE());
+  
+    await act(async () => {
+      const permissionsGranted = await result.current.requestPermissions();
+      expect(permissionsGranted).toBe(false);
+    });
+  });
+
   it('should scan for peripherals and add devices to state', async () => {
     const mockDevice: Device = {
       id: '1',
