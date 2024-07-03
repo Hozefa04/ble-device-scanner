@@ -1,4 +1,4 @@
-import useBLE from "@/hooks/useBLE";
+import useBLE from "@/app/hooks/useBLE";
 import React, { useEffect, useState } from "react";
 import {
   StyleSheet,

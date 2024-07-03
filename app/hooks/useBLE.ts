@@ -20,46 +20,12 @@ function useBLE(): BluetoothLowEnergyApi {
   // State to store all discovered devices
   const [allDevices, setAllDevices] = useState<Device[]>([]); 
 
-  // Function to request permissions required for Android API level 31 and above
-  const requestAndroid31Permissions = async () => {
-    const bluetoothScanPermission = await PermissionsAndroid.request(
-      PermissionsAndroid.PERMISSIONS.BLUETOOTH_SCAN,
-      {
-        title: "Location Permission",
-        message: "Bluetooth Low Energy requires Location",
-        buttonPositive: "OK",
-      }
-    );
-    const bluetoothConnectPermission = await PermissionsAndroid.request(
-      PermissionsAndroid.PERMISSIONS.BLUETOOTH_CONNECT,
-      {
-        title: "Location Permission",
-        message: "Bluetooth Low Energy requires Location",
-        buttonPositive: "OK",
-      }
-    );
-    const fineLocationPermission = await PermissionsAndroid.request(
-      PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
-      {
-        title: "Location Permission",
-        message: "Bluetooth Low Energy requires Location",
-        buttonPositive: "OK",
-      }
-    );
-
-    // Check if all required permissions are granted
-    return (
-      bluetoothScanPermission === "granted" &&
-      bluetoothConnectPermission === "granted" &&
-      fineLocationPermission === "granted"
-    );
-  };
-
   // Function to request necessary permissions based on the Android API level
   const requestPermissions = async () => {
     if (Platform.OS === "android") {
-      // For Android API levels below 31
-      if ((ExpoDevice.platformApiLevel ?? -1) < 31) {
+      const apiLevel = ExpoDevice.platformApiLevel ?? 0;
+      
+      if (apiLevel < 31) {
         const granted = await PermissionsAndroid.request(
           PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
           {
@@ -70,13 +36,19 @@ function useBLE(): BluetoothLowEnergyApi {
         );
         return granted === PermissionsAndroid.RESULTS.GRANTED;
       } else {
-        // For Android API level 31 and above
-        const isAndroid31PermissionsGranted = await requestAndroid31Permissions();
-        return isAndroid31PermissionsGranted;
+        const result = await PermissionsAndroid.requestMultiple([
+          PermissionsAndroid.PERMISSIONS.BLUETOOTH_SCAN,
+          PermissionsAndroid.PERMISSIONS.BLUETOOTH_CONNECT,
+          PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+        ]);
+        return (
+          result['android.permission.BLUETOOTH_SCAN'] === PermissionsAndroid.RESULTS.GRANTED &&
+          result['android.permission.BLUETOOTH_CONNECT'] === PermissionsAndroid.RESULTS.GRANTED &&
+          result['android.permission.ACCESS_FINE_LOCATION'] === PermissionsAndroid.RESULTS.GRANTED
+        );
       }
     } else {
-      // iOS permissions are handled differently and are assumed to be granted
-      return true; 
+      return true;
     }
   };
 
@@ -85,15 +57,14 @@ function useBLE(): BluetoothLowEnergyApi {
     devices.findIndex((device) => nextDevice.id === device.id) > -1;
 
   // Function to start scanning for BLE peripherals
-  const scanForPeripherals = () =>
+  const scanForPeripherals = () => {
     bleManager.startDeviceScan(null, null, (error, device) => {
       if (error) {
         console.log(error);
         return;
       }
       if (device) {
-        setAllDevices((prevState: Device[]) => {
-           // Add the device to the state if it's not a duplicate
+        setAllDevices((prevState) => {
           if (!isDuplicteDevice(prevState, device)) {
             return [...prevState, device];
           }
@@ -101,6 +72,7 @@ function useBLE(): BluetoothLowEnergyApi {
         });
       }
     });
+  };
 
   return {
     scanForPeripherals,
